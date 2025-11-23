@@ -62,22 +62,81 @@ export RESOURCES_DIR="${SCRIPT_DIR}/resources"
 export LIB_DIR="${SCRIPT_DIR}/lib"
 export MODULES_DIR="${SCRIPT_DIR}/modules"
 
-# Function to ask yes/no questions
+# Function to ask yes/no questions with arrow key toggle
 ask() {
   local prompt="$1"
   local default="$2"
-  local response
+  local selected
 
+  # Set initial selection based on default
   if [[ "$default" == "y" ]]; then
-    prompt="$prompt [${GREEN}Y${NC}/n]: "
+    selected=0  # Yes
   else
-    prompt="$prompt [y/${GREEN}N${NC}]: "
+    selected=1  # No
   fi
 
-  echo -n "$prompt"
-  read response
-  response=${response:-$default}
-  [[ "$response" =~ ^[Yy]$ ]]
+  local key
+
+  # Hide cursor
+  tput civis
+
+  # Draw function
+  draw_ask() {
+    local yes_display no_display
+    if [[ $selected -eq 0 ]]; then
+      yes_display="${GREEN}${BOLD}▸ Yes${NC}"
+      no_display="  No"
+    else
+      yes_display="  Yes"
+      no_display="${GREEN}${BOLD}▸ No${NC}"
+    fi
+
+    # Clear line and redraw
+    if [[ $1 -eq 1 ]]; then
+      printf "\r\033[K"
+    fi
+    printf "%s  %s  %s" "$prompt" "$yes_display" "$no_display"
+  }
+
+  # Initial draw
+  draw_ask 0
+
+  # Input loop
+  while true; do
+    read -sk1 key
+
+    case "$key" in
+      $'\x1b')  # Escape sequence
+        read -sk2 key
+        case "$key" in
+          '[A'|'[D')  # Up or Left arrow
+            selected=0
+            ;;
+          '[B'|'[C')  # Down or Right arrow
+            selected=1
+            ;;
+        esac
+        ;;
+      'y'|'Y')
+        selected=0
+        ;;
+      'n'|'N')
+        selected=1
+        ;;
+      $'\n'|$'\r'|'')  # Enter
+        break
+        ;;
+    esac
+
+    draw_ask 1
+  done
+
+  # Show cursor and newline
+  tput cnorm
+  echo ""
+
+  # Return result
+  [[ $selected -eq 0 ]]
 }
 
 # Multiselect function
