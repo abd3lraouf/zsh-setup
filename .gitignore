@@ -1,0 +1,27 @@
+# Sensitive files
+.token
+*.token
+.env
+.env.*
+*.pem
+*.key
+
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Backup files
+*.backup
+*~
+*.swp
+*.swo
+
+# Editor directories
+.idea/
+.vscode/
+*.sublime-*
+
+# Logs
+*.log
