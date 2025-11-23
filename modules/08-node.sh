@@ -50,6 +50,7 @@ run_module() {
         print_success "Node $NODE_VERSION already installed"
       else
         echo "  Installing Node.js $NODE_VERSION..."
+        print_time_estimate "1-2 minutes"
         nvm install "$NODE_VERSION"
         print_success "Node.js $NODE_VERSION installed"
       fi

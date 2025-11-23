@@ -8,8 +8,53 @@ export GREEN='\033[0;32m'
 export YELLOW='\033[1;33m'
 export BLUE='\033[0;34m'
 export CYAN='\033[0;36m'
+export MAGENTA='\033[0;35m'
 export BOLD='\033[1m'
+export DIM='\033[2m'
 export NC='\033[0m' # No Color
+
+# Spinner for long operations
+spinner() {
+  local pid=$1
+  local message="${2:-Processing}"
+  local spinstr='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+  local i=0
+
+  tput civis # Hide cursor
+  while kill -0 $pid 2>/dev/null; do
+    local char="${spinstr:$i:1}"
+    printf "\r  ${CYAN}%s${NC} %s" "$char" "$message"
+    i=$(( (i + 1) % ${#spinstr} ))
+    sleep 0.1
+  done
+  tput cnorm # Show cursor
+  printf "\r"
+}
+
+# Run command with spinner
+run_with_spinner() {
+  local message="$1"
+  shift
+
+  "$@" &>/dev/null &
+  local pid=$!
+  spinner $pid "$message"
+  wait $pid
+  return $?
+}
+
+# Check network connectivity
+check_network() {
+  if ! curl -s --head --connect-timeout 5 https://github.com &>/dev/null; then
+    return 1
+  fi
+  return 0
+}
+
+# Print estimated time warning
+print_time_estimate() {
+  echo "  ${DIM}(This may take $1)${NC}"
+}
 
 # Script directories
 export SCRIPT_DIR="${SCRIPT_DIR:-$(cd "$(dirname "$0")" && pwd)}"
@@ -24,9 +69,9 @@ ask() {
   local response
 
   if [[ "$default" == "y" ]]; then
-    prompt="$prompt [Y/n]: "
+    prompt="$prompt [${GREEN}Y${NC}/n]: "
   else
-    prompt="$prompt [y/N]: "
+    prompt="$prompt [y/${GREEN}N${NC}]: "
   fi
 
   echo -n "$prompt"

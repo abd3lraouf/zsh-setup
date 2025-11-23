@@ -39,7 +39,8 @@ run_module() {
         LATEST_RUBY=$(rbenv install -l 2>/dev/null | grep -E '^\s*[0-9]+\.[0-9]+\.[0-9]+\s*$' | tail -1 | tr -d ' ')
 
         if [[ -n "$LATEST_RUBY" ]]; then
-          echo "  Installing Ruby $LATEST_RUBY (this may take a few minutes)..."
+          echo "  Installing Ruby $LATEST_RUBY..."
+          print_time_estimate "5-10 minutes"
           rbenv install "$LATEST_RUBY"
           rbenv global "$LATEST_RUBY"
           print_success "Ruby $LATEST_RUBY installed and set as global"

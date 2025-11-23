@@ -123,16 +123,13 @@ run_module() {
       if [[ -d "$PLUGIN_DIR" ]]; then
         # Check if it's a git repo
         if [[ -d "$PLUGIN_DIR/.git" ]]; then
-          echo "  Updating $plugin..."
-          git -C "$PLUGIN_DIR" pull --quiet
+          run_with_spinner "Updating $plugin..." git -C "$PLUGIN_DIR" pull --quiet
         else
-          echo "  Reinstalling $plugin..."
           rm -rf "$PLUGIN_DIR"
-          git clone --depth=1 "${CUSTOM_PLUGINS[$plugin]}" "$PLUGIN_DIR"
+          run_with_spinner "Reinstalling $plugin..." git clone --depth=1 "${CUSTOM_PLUGINS[$plugin]}" "$PLUGIN_DIR" --quiet
         fi
       else
-        echo "  Installing $plugin..."
-        git clone --depth=1 "${CUSTOM_PLUGINS[$plugin]}" "$PLUGIN_DIR"
+        run_with_spinner "Installing $plugin..." git clone --depth=1 "${CUSTOM_PLUGINS[$plugin]}" "$PLUGIN_DIR" --quiet
       fi
     else
       # Built-in oh-my-zsh plugin

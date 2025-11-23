@@ -125,6 +125,7 @@ run_module() {
 
         if [[ -n "$AVAILABLE_VERSION" ]]; then
           echo "  Installing Java $AVAILABLE_VERSION..."
+          print_time_estimate "1-3 minutes"
           if sdk install java "$AVAILABLE_VERSION" <<< "y"; then
             print_success "Java $AVAILABLE_VERSION installed and set as default"
           else

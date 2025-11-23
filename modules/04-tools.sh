@@ -62,8 +62,7 @@ run_module() {
     if [[ ${#TOOLS_TO_INSTALL[@]} -gt 0 ]]; then
       echo ""
       if ask "  Install missing tools (${TOOLS_TO_INSTALL[*]})?" "y"; then
-        echo "  Installing tools..."
-        brew install ${TOOLS_TO_INSTALL[@]}
+        run_with_spinner "Installing tools..." brew install ${TOOLS_TO_INSTALL[@]} --quiet
         print_success "Tools installed"
       else
         print_warning "Skipping tools"

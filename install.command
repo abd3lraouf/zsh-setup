@@ -14,9 +14,32 @@ export MODULES_DIR="$SCRIPT_DIR/modules"
 # Source common functions
 source "$LIB_DIR/common.sh"
 
+# Ctrl+C handler
+cleanup() {
+  echo ""
+  echo ""
+  echo "${YELLOW}Installation interrupted by user${NC}"
+  tput cnorm  # Restore cursor
+  exit 130
+}
+trap cleanup INT TERM
+
 echo "========================================"
-echo "  ZSH Setup Script"
+echo "  ${BOLD}ZSH Setup Script${NC}"
 echo "========================================"
+echo ""
+
+# Check network connectivity
+echo -n "Checking network connectivity... "
+if check_network; then
+  echo "${GREEN}OK${NC}"
+else
+  echo "${RED}FAILED${NC}"
+  echo ""
+  print_error "No internet connection detected"
+  print_info "This script requires internet access to download packages"
+  exit 1
+fi
 echo ""
 
 # Check if resources exist

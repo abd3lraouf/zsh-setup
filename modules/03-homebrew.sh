@@ -11,6 +11,7 @@ run_module() {
   else
     if ask "  Install Homebrew?" "y"; then
       echo "  Installing Homebrew..."
+      print_time_estimate "2-5 minutes"
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       eval "$(/opt/homebrew/bin/brew shellenv)"
       print_success "Homebrew installed"

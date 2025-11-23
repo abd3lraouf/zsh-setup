@@ -75,7 +75,8 @@ EOF
         if pyenv versions --bare | grep -q "^${selected_version}$"; then
           print_success "Python $selected_version already installed"
         else
-          echo "  Installing Python $selected_version (this may take a few minutes)..."
+          echo "  Installing Python $selected_version..."
+          print_time_estimate "3-5 minutes"
           pyenv install "$selected_version"
           print_success "Python $selected_version installed"
         fi

@@ -19,8 +19,7 @@ run_module() {
       print_warning "Oh My Zsh exists but is not a git repository"
       if ask "  Replace with fresh clone from official repo?" "y"; then
         rm -rf "$HOME/.oh-my-zsh"
-        echo "  Cloning Oh My Zsh..."
-        git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh" --quiet
+        run_with_spinner "Cloning Oh My Zsh..." git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh" --quiet
         print_success "Oh My Zsh reinstalled"
       else
         print_warning "Keeping existing Oh My Zsh"
@@ -28,8 +27,7 @@ run_module() {
     fi
   else
     if ask "  Install Oh My Zsh?" "y"; then
-      echo "  Cloning Oh My Zsh..."
-      git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh" --quiet
+      run_with_spinner "Cloning Oh My Zsh..." git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh" --quiet
       print_success "Oh My Zsh installed"
     else
       print_warning "Skipping Oh My Zsh"
