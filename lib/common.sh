@@ -84,18 +84,18 @@ ask() {
   draw_ask() {
     local yes_display no_display
     if [[ $selected -eq 0 ]]; then
-      yes_display="${GREEN}${BOLD}▸ Yes${NC}"
+      yes_display="\033[0;32m\033[1m▸ Yes\033[0m"
       no_display="  No"
     else
       yes_display="  Yes"
-      no_display="${GREEN}${BOLD}▸ No${NC}"
+      no_display="\033[0;32m\033[1m▸ No\033[0m"
     fi
 
     # Clear line and redraw
     if [[ $1 -eq 1 ]]; then
-      printf "\r\033[K"
+      echo -ne "\r\033[K"
     fi
-    printf "%s  %s  %s" "$prompt" "$yes_display" "$no_display"
+    echo -ne "${prompt}  ${yes_display}  ${no_display}"
   }
 
   # Initial draw
