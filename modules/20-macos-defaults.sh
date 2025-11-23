@@ -36,9 +36,11 @@ run_module() {
   fi
 
   # Keyboard settings
-  if ask "    Keyboard: Fast key repeat?" "y"; then
-    defaults write NSGlobalDomain KeyRepeat -int 2
-    defaults write NSGlobalDomain InitialKeyRepeat -int 15
+  if ask "    Keyboard: Faster key repeat?" "y"; then
+    # KeyRepeat: 3 = fast but not too aggressive (default is 6)
+    # InitialKeyRepeat: 25 = normal delay before repeat starts (default is 25)
+    defaults write NSGlobalDomain KeyRepeat -int 3
+    defaults write NSGlobalDomain InitialKeyRepeat -int 20
   fi
 
   if ask "    Keyboard: Disable auto-correct?" "n"; then
